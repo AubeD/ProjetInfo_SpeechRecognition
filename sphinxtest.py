@@ -11,13 +11,13 @@ with sr.Microphone() as source:
 try:
     parole=r.recognize_sphinx(audio)
     print(parole)
-    app = Application(backend="uia").start('notepad.exe')
+    app = Application(backend="uia").connect(title="mainForm")
     # describe the window inside Notepad.exe process
-    dlg_spec = app.SansTitreBlocNotes
+    dlg_spec = app.mainForm
     # wait till the window is really open
     actionable_dlg = dlg_spec.wait('visible')
-    if parole=="browse":
-        app.SansTitreBlocNotes.menu_select("File->EnregistrerSous")
+    if parole=="connect nao":
+        app.mainForm.connectNao
     
 except sr.UnknownValueError:
     print("Sphinx could not understand audio")
