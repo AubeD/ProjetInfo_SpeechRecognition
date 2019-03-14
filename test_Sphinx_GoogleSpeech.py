@@ -15,7 +15,7 @@ sphinx_use_hotwords = False
 
 # Configuration de Sphinx
 if recognizer == 'sphinx':
-    model_path = 'D:/3A_Centrale/Projet Info/ProjetInfo_SpeechRecognition/EN-NAO/'
+    model_path = 'EN-NAO/'
     config = {
         'hmm': os.path.join(model_path, 'acoustic-model'),
         'lm': os.path.join(model_path, 'language-model.lm.bin'),
@@ -65,7 +65,7 @@ with sr.Microphone(sample_rate=44100) as source:
                     response = r.recognize_sphinx(audio, language=config_sphinx, grammar=grammar, show_all=True)
                     hypothese = response.hyp()
                     if hypothese:
-                        print(hypothese.hypstr)
+                        print('+{}+'.format(hypothese.hypstr))
                         print(hypothese.best_score)
                     #print("I think you said " + response + "'")
         except sr.UnknownValueError:

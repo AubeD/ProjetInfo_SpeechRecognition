@@ -1,4 +1,0 @@
-#JSGF V1.0;
-
-grammar grammar_essai;
-public <order> = ( mirror | nao ) ( on | off );
