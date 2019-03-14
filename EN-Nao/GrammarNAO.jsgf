@@ -1,0 +1,13 @@
+#JSGF V1.0;
+
+grammar GrammarNAO;
+
+public <GrammarNAO> = (<TotalOrder> | <DescriptiveOrder>);
+
+<TotalOrder> = <verb> [ <adjective> ] <noun>;
+<DescriptiveOrder> = <noun> <onoff>;
+
+<noun> = ( nao | mirror | telecontrol | kinect | movement );
+<verb> = ( connect | make | start | stop | connect | close | save | rest );
+<onoff> = ( on | off );
+<adjective> = real-time;
