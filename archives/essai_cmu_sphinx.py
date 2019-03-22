@@ -21,10 +21,10 @@ config = {
 
 ps = Pocketsphinx(**config)
 ps.decode(
-audio_file=os.path.join(os.getcwd(), 'essai.wav'), # add your audio file here
-buffer_size=2048,
-no_search=False,
-full_utt=False
+    audio_file=os.path.join(os.getcwd(), 'essai.wav'), # add your audio file here
+    buffer_size=2048,
+    no_search=False,
+    full_utt=False
 )
 
 print(ps.hypothesis())

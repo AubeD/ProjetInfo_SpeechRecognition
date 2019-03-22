@@ -5,6 +5,11 @@ Created on Thu Mar  7 09:24:42 2019
 @author: natan
 """
 
+#########################################################################################
+# Fichier (pompé sur Internet !) qui liste les micros d'un ordinateur Windows.          #
+# À utiliser en cas de problème pour trouver le numéro du micro à utiliser, si besoin,  #
+# dans sr.Microphone(*parametres)                                                       #
+#########################################################################################
 import pyaudio
  
 standard_sample_rates = [8000.0, 9600.0, 11025.0, 12000.0,

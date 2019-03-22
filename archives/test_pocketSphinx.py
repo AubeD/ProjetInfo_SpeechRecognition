@@ -1,11 +1,23 @@
 # -*- coding: utf-8 -*-
 
+##############################################################################################
+# Ce fichier (pompé sur Internet !) illustre les possibilités de Sphinx dans le cas où on ne #
+# passerait pas par la surcouche SpeechRecognition:                                          #
+#     - Score de détection de chaque phonème du mot                                          #
+#     - Ensemble des hypothèses émises par Sphinx                                            #
+#     - Score de chaque hypothèse                                                            #
+# Dans les faits, on a plus été confrontés au problème de la surdétection qu'au problème de  #
+# la sous-détection, et on n'a pas eu à se servir de tout cela                               #
+##############################################################################################
+
 from __future__ import print_function
 import os
 from pocketsphinx import Pocketsphinx, get_data_path
 
+# Accès aux fichiers d'exemples fournis/ayant servi à entraîner Sphinx
 data_path = get_data_path()
 
+# Entrer le chemin vers le modèle de reconnaissance vocale Sphinx à utiliser
 model_path = 'D:/3A_Centrale/Projet Info/ProjetInfo_SpeechRecognition/EN-NAO/'
 config = {
     'hmm': os.path.join(model_path, 'acoustic-model'),

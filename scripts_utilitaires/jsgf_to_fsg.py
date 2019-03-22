@@ -1,11 +1,23 @@
 # -*- coding: utf-8 -*-
+
+
+#########################################################################################
+# Fichier (pompé sur Internet !) permettant de compiler un fichier de grammaire .jsgf   #
+# en un fichier .fsg utilisable par Sphinx. À noter que:                                #
+# - Les chemins sont à renseigner (on n'utilise pas config.py ici, ce script étant      #
+#   fortement susceptible d'être déplacé                                                #
+# - Si la grammaire s'appelle 'nom_grammaire.jsgf', la règle qui sera lue sera celle qui#
+#   se nomme nom_grammaire, et seulement elle. Attention lors de la construction de la  #
+#   grammaire, donc (-> faire une arborescence dont la base est nom_grammaire)          #
+#########################################################################################
+
 # Dependencies
 import os
 import pocketsphinx as ps
 
 # Fichier à convertir et paramètres de la reconnaissance vocale
-model_path = 'D:/3A_Centrale/Projet Info/ProjetInfo_SpeechRecognition/EN-NAO/'
-log_path = 'D:/3A_Centrale/Projet Info/ProjetInfo_SpeechRecognition/log_essai.log'
+model_path = '../EN-NAO/'
+log_path = 'log_jsgf_to_fsg.log'
 config = {
     'hmm': os.path.join(model_path, 'acoustic-model'),
     'lm': os.path.join(model_path, 'language-model.lm.bin'),

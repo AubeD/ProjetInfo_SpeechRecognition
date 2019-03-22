@@ -7,7 +7,22 @@ Created on Thu Feb 28 11:17:10 2019
 
 #!/usr/bin/env python3
 
+##############################################################################################
+# Ce fichier (pompé sur Internet !) permet de tester les performances de l'API Google Cloud  #
+# Speech. Cette dernière fournit des résultats fantastiques:                                 #
+#   - Reconnaissance en temps réel de ce qu'on dit (adaptation temps réel de l'hypthèse), pas#
+#   besoin d'attendre la fin de la phrase                                                    #
+#   - Qualité de reconnaissance bien meilleure que tous les outils testés.                   #
+# MAIS:                                                                                      #
+#   - Elle est payante au-delà de 60min/mois                                                 #
+#   - Il faut s'inscrire au service de Cloud Google, créer un compte de service, entrer une  #
+#     carte bleue et récupérer une clé d'API.                                                #
+# On ne s'en est pas servi dans le cadre du projet pour ces dernières raisons.               #
+##############################################################################################
+
 # [START speech_transcribe_infinite_streaming]
+
+# Modules à importer
 from __future__ import division
 
 import time
@@ -20,6 +35,8 @@ import pyaudio
 from six.moves import queue
 
 import os
+
+# Entrer le chemin vers votre clé d'API ici (il faut s'être inscrit à la plateforme Cloud, etc...)
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'D:/3A_Centrale/Projet Info/ProjetsInfoECL-687115d626e0.json'
 
 # Audio recording parameters
@@ -172,6 +189,11 @@ def listen_print_loop(responses, stream):
 
 
 def main():
+    """
+    Programme principal. Écoute ce que dit l'utilisateur, et affiche la
+    réponse de l'API en temps réel jusqu'à que l'utilisateur prononce 'Quit'
+    ou 'Exit'.
+    """
     client = speech.SpeechClient()
     config = speech.types.RecognitionConfig(
         encoding=speech.enums.RecognitionConfig.AudioEncoding.LINEAR16,
@@ -200,6 +222,8 @@ def main():
             listen_print_loop(responses, stream)
 
 
+# Script principal
 if __name__ == '__main__':
     main()
+    
 # [END speech_transcribe_infinite_streaming]

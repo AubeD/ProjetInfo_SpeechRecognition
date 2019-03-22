@@ -5,28 +5,25 @@ Created on Thu Mar 14 11:31:00 2019
 @author: natan
 """
 
-# Importation des modules
+#########################################################################################
+# Importation des modules                                                               #
+#########################################################################################
 import speech_recognition as sr
 import matplotlib.pyplot as plt
 import winsound
 import os
 import numpy as np
+import config
 
-
+#########################################################################################
+# Fonctions utilisées pour l'enregistrement/l'analyse/le nettoyage de la bdd sonore     #
+#########################################################################################
 def instruction_plus_proche(instruction):
-    instructions = [ # Instructions possibles pour le projet
-                'connect nao',
-                'make nao rest',
-                'start real-time telecontrol',
-                'stop real-time telecontrol',
-                'mirror on',
-                'mirror off',
-                'connect kinect',
-                'close kinect',
-                'save movement',
-                'stop movement',
-                'RIEN'
-               ]
+    """
+    Post-traitement: reconnaît une instruction connue à partir d'une instruction
+    reconnue par Sphinx
+    """
+    instructions = config.instructions
     for instr in instructions:
         if (instruction == instr) or (instr in instruction):
             return instruction
@@ -36,30 +33,24 @@ def instruction_plus_proche(instruction):
 
 def enregistrer_phrase(duree=5):
     """Enregistre et labellise une séquence audio"""
-    instructions = {
-                    '0': 'connect nao',
-                    '1': 'make nao rest',
-                    '2': 'start real-time telecontrol',
-                    '3': 'stop real-time telecontrol',
-                    '4': 'mirror on',
-                    '5': 'mirror off',
-                    '6': 'connect kinect',
-                    '7': 'close kinect',
-                    '8': 'save movement',
-                    '9': 'stop movement',
-                    '10': 'RIEN'
-                   }
+    # Chargement de la liste des instructions possibles depuis config.py
+    liste_instructions = list(config.instructions.keys())
+    instructions = {str(i):liste_instructions[i] for i in range(len(liste_instructions))}
+    # On demande à l'utilisateur le label de la phrase à prononcer, parmi les instructions possibles
     print(instructions)
     choix = input("Entrer le numéro de l'instruction: ")
     instruction = instructions[choix]
     print('Instruction choisie: {}'.format(instruction))
+    # On enregistre la phrase sous la forme d'un fichier audio (objet wav sous Python)
     with sr.Microphone(sample_rate=44100) as source:
         r = sr.Recognizer()
         print('Parlez')
         audio = r.listen(source,phrase_time_limit=duree)
         print('Enregistrement terminé')
         fichier_wav = audio.get_wav_data()
-        
+    
+    # On écrit cet objet wav dans un fichier .wav au sein du dossier records
+    # (système de sous-dossiers classant les fichiers en fonction de l'instruction/label)
     chemin = 'records/'+instruction
     if not(os.path.exists(chemin)):
         os.makedirs(chemin)
@@ -68,7 +59,10 @@ def enregistrer_phrase(duree=5):
     
     with open(chemin_nouveau_fichier, 'wb') as fo:
         fo.write(fichier_wav)
-        
+    
+    # On rejoue le son et on demande à l'utilisateur de valider l'enregistrement
+    # (en boucle jusqu'à que la réponse soit clairement oui ou non).
+    # Si c'est non on eface l'enregistrement.
     winsound.PlaySound(chemin_nouveau_fichier, winsound.SND_FILENAME)
     condition=False
     while not(condition):
@@ -86,7 +80,10 @@ def analyser_son(chemin, config_sphinx, grammar):
     Pour une séquence audio, la soumet à Sphinx et retourne l'hypothèse et le
     score obtenus, en plus de l'instruction attendue
     """
+    # On extrait l'instruction/label du fichier grâce au système de nomenclature
     instruction = os.path.split(chemin)[1].split('_')[0]
+    # On soumet le fichier audio à Sphinx, et on note l'hypothèse et le score de
+    # confiance obtenus
     with sr.AudioFile(chemin) as source:
         r = sr.Recognizer()
         audio = r.record(source)
@@ -96,27 +93,28 @@ def analyser_son(chemin, config_sphinx, grammar):
         instruction_sphinx = hypothese.hypstr
         score_sphinx = hypothese.best_score
     else:
+        # S'il n'y a pas d'hypothèse (son non reconnu) l'instruction reconnue par
+        # Sphinx est prise comme 'RIEN'
         instruction_sphinx = 'RIEN'
         score_sphinx = None
     
+    # On identifie l'instruction à une instruction connue ou à RIEN
     instruction_reconnue = instruction_plus_proche(instruction_sphinx)
+    # On renvoie le triplet (label_manuel, label_sphinx, confiance_sphinx)
     return instruction, instruction_reconnue, score_sphinx
 
 def analyser_banque_sonore(model_path):
     """
     Applique systématiquement analyser_son à tous les enregistrements de la bdd,
     et retourne la liste de (instruction attendue, instruction reconnue, score)
+    pour chaque enregistrement (l'ordre de la liste n'importe pas)
     """
     # Configuration de Sphinx
-    config = {
-        'hmm': os.path.join(model_path, 'acoustic-model'),
-        'lm': os.path.join(model_path, 'language-model.lm.bin'),
-        'dict': os.path.join(model_path, 'pronounciation-dictionary.dict'),
-        'grammar':os.path.join(model_path, 'GrammarNAO.jsgf')
-    }
-    config_sphinx = (config['hmm'], config['lm'], config['dict'])
-    grammar = config['grammar']
+    conf = config.config_sphinx
+    config_sphinx = (conf['hmm'], conf['lm'], conf['dict'])
+    grammar = conf['grammar']
     
+    # Analyse de tous les fichiers du dossier 'records'
     resultats_analyses_sons = []
     for instruction in os.listdir('records'):
         for son in os.listdir('records/{}'.format(instruction)):
@@ -131,26 +129,20 @@ def visualiser_TP_FP():
     l'instruction reconnue par Sphinx et le score de la reconnaissance
     - Pour chaque instruction possible, trace le score renvoyé par Sphinx pour
     les Vrais Positifs (TP, instruction reconnue à raison) et les Faux Positifs
-    (FP, instruction reconnue à tort)
+    (FP, instruction reconnue à tort). Utiliser ces courbes pour déterminer visuellement
+    les seuils de confiance en-dessous desquels une instruction reconnue doit être ignorée.
     - Renvoie les données ayant servi aux graphes pour d'éventuelles analyses
     statistiques
     """
-    model_path = 'EN-NAO'
-    resultats_analyse = analyser_banque_sonore(model_path)
-    instructions = [
-                'connect nao',
-                'make nao rest',
-                'start real-time telecontrol',
-                'stop real-time telecontrol',
-                'mirror on',
-                'mirror off',
-                'connect kinect',
-                'close kinect',
-                'save movement',
-                'stop movement',
-                'RIEN'
-               ]
-    TP_FP = {i:{'TP':[], 'FP':[]} for i in instructions if i!= 'RIEN'}
+    # On analyse le dossier records pour obtenir la liste de (label_manuel, label_sphinx, confiance_sphinx)
+    # pour chaque fichier audio
+    resultats_analyse = analyser_banque_sonore(config.model_path)
+    # On charge l'ensemble des instructions possibles depuis config.py
+    instructions = list(config.instructions.keys())
+    # Pour chaque instruction possible, on crée une liste TP contenant les scores
+    # de confiance des enregistrements pour lesquels label_manuel = label_sphinx = instruction
+    # et une liste FP pour laquelle label_sphinx = instruction != label_manuel
+    TP_FP = {i:{'TP':[], 'FP':[]} for i in instructions}
     for instr, instr_sphinx, score in resultats_analyse:
         if instr == instr_sphinx:
             if instr != 'RIEN':
@@ -158,6 +150,9 @@ def visualiser_TP_FP():
         else:
             TP_FP[instr_sphinx]['FP'].append(score)
     
+    # Pour chaque instruction possible, on trace la position des TP (en bleu) et
+    # des FP (en rouge) sur la droite des scores de confiances (on fait du jittering
+    # selon l'axe y pour pouvoir distinguer des points proches)
     for instr in TP_FP:
         data_TP = TP_FP[instr]['TP']
         data_FP = TP_FP[instr]['FP']
@@ -169,9 +164,16 @@ def visualiser_TP_FP():
         plt.ylim([-5, 5])
         plt.legend()
     
+    # On retourne le dictionnaire (scores_TP, scores_FP = f(instruction))
     return TP_FP
 
 def enregistrer_FP_en_continu(nb_extraits, duree_enregistrement=5):
+    """
+    Enregistre nb_fois d'affilée des extraits sonores avec le label "RIEN" (voir
+    nomenclature de enregistrer_phrases). À utiliser en tâche de fond, dans un
+    contexte n'ayant rien à voir avec NAO afin de se constituer une base 
+    de données de faux positifs pour la détermination des seuils de rejet.
+    """
     with sr.Microphone(sample_rate=44100) as source:
         r = sr.Recognizer()
         for i in range(nb_extraits):
@@ -188,17 +190,19 @@ def enregistrer_FP_en_continu(nb_extraits, duree_enregistrement=5):
                 fo.write(fichier_wav)
                 
 def supprimer_enregistrements_RIEN_sans_FP():
+    """
+    Explore l'ensemble des fichiers audio labellisés "RIEN", et les soumet à
+    Sphinx. Supprime les enregistrements qui n'ont pas été reconnus à tort comme
+    des instructions valides (inutiles à la recherche de seuils de rejet de faux
+    positifs). Renomme les fichiers restants ('consolidés') afin qu'ils soient bien
+    identifiés
+    """
     # Configuration de Sphinx
-    model_path = 'EN-NAO'
-    config = {
-        'hmm': os.path.join(model_path, 'acoustic-model'),
-        'lm': os.path.join(model_path, 'language-model.lm.bin'),
-        'dict': os.path.join(model_path, 'pronounciation-dictionary.dict'),
-        'grammar':os.path.join(model_path, 'GrammarNAO.jsgf')
-    }
-    config_sphinx = (config['hmm'], config['lm'], config['dict'])
-    grammar = config['grammar']
+    conf = config.config_sphinx
+    config_sphinx = (conf['hmm'], conf['lm'], conf['dict'])
+    grammar = conf['grammar']
     chemin = 'records/RIEN/'
+    # Identification des fichiers à supprimer (en les soumettant à Sphinx)
     fichiers_conserves = []
     fichiers_supprimes = []
     print('Début du nettoyage des fichiers inutiles...')
@@ -209,8 +213,11 @@ def supprimer_enregistrements_RIEN_sans_FP():
         else:
             print('Fichier {} conservé !'.format(chemin+fichier))
             fichiers_conserves.append(chemin+fichier)
+    # Suppression des fichiers inutiles (non-FP)
     for chemin_fichier in fichiers_supprimes:
         os.remove(chemin_fichier)
+    # Renommage des fichiers en 2 étapes afin d'éviter des conflits avec la nomenclature
+    # des fichiers déjà consolidés
     for i in range(len(fichiers_conserves)):
         os.rename(fichiers_conserves[i], '{}RIEN_FP_confirme_attente_{}'.format(chemin, i+1))
     for i in range(len(fichiers_conserves)):
@@ -219,11 +226,18 @@ def supprimer_enregistrements_RIEN_sans_FP():
         os.rename(chemin_fichier, chemin_slice[0] + chemin_slice[1])
     print('Nettoyage terminé !')
             
-        
-#while True:
-#    enregistrer_phrase()
+#########################################################################################
+# Programme principal                                                                   #
+#########################################################################################
 
-#enregistrer_FP_en_continu(50, 5)
-#supprimer_enregistrements_RIEN_sans_FP()
-
-#visualiser_TP_FP()
+if __name__ == '__main__':
+#    # Décommenter ce bloc pour enregistrer manuellement des instructions en continu
+#    while True:
+#        enregistrer_phrase()
+    
+#    # Décommenter ce bloc pour enregistrer des faux positifs en continu
+#    enregistrer_FP_en_continu(150, 5)
+#    supprimer_enregistrements_RIEN_sans_FP()
+    
+    # Décommenter ce bloc pour visualiser les TP et FP parmi les enregistrements existants
+    visualiser_TP_FP()
