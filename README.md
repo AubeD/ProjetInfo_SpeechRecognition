@@ -75,12 +75,12 @@ De base, SpeechRecognition utilise le micro "Par défaut" de l'ordinateur consid
 
 #### Modifier le vocabulaire et la grammaire compris par NAO
 
-**Modification du dictionnaire**
+*Modification du dictionnaire*
 1. Lister TOUS les mots que NAO devra pouvoir comprendre. Ils devront être présents dans *EN-NAO/pronounciation-dictionary.dict*.
 
 2. Les copier-coller depuis *EN-NAO/pronounciation-dictionary-original.dict* vers *EN-NAO/pronounciation-dictionary.dict* (ou trouver leur phonétique s'ils n'y sont pas, et les entrer dans notre dictionnaire).
 
-**Modification de la grammaire**
+*Modification de la grammaire*
 1. Lister les instructions que NAO devra pouvoir comprendre. En déduire un ensemble de structures de phrases possibles, en gardant à l'esprit qu'il faut que certaines ne correspondent pas à des instructions (dans le cas contraire, Sphinx considérera n'importe quoi comme une instruction...).
 
 2. Modifier le fichier de grammaire *EN-NAO/GrammarNAO.jsgf* en s'appuyant:
