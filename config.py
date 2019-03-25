@@ -50,3 +50,7 @@ instructions =  {
                 'stop movement':-5500,
                 'RIEN':0 # 'RIEN' désigne une absence d'instruction reconnue.
                 }
+
+# Microphone à utiliser et son paramétrage (utiliser scripts_utilitaires/listage_micros.py pour le trouver)
+id_micro = None # None pour utiliser le périphérique par défaut
+sample_rate = 44100

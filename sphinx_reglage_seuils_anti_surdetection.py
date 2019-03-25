@@ -42,7 +42,7 @@ def enregistrer_phrase(duree=5):
     instruction = instructions[choix]
     print('Instruction choisie: {}'.format(instruction))
     # On enregistre la phrase sous la forme d'un fichier audio (objet wav sous Python)
-    with sr.Microphone(sample_rate=44100) as source:
+    with sr.Microphone(device_index=config.id_micro, sample_rate=config.sample_rate) as source:
         r = sr.Recognizer()
         print('Parlez')
         audio = r.listen(source,phrase_time_limit=duree)
@@ -174,7 +174,7 @@ def enregistrer_FP_en_continu(nb_extraits, duree_enregistrement=5):
     contexte n'ayant rien à voir avec NAO afin de se constituer une base 
     de données de faux positifs pour la détermination des seuils de rejet.
     """
-    with sr.Microphone(sample_rate=44100) as source:
+    with sr.Microphone(device_index=config.id_micro, sample_rate=config.sample_rate) as source:
         r = sr.Recognizer()
         for i in range(nb_extraits):
             print('Enregistrement {}/{} commencé'.format(i+1, nb_extraits))

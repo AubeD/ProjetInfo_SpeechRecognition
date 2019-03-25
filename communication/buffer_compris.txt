@@ -1,4 +1,0 @@
-connect nao
-make nao rest
-start real-time telecontrol
-stop real-time telecontrol

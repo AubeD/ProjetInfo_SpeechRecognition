@@ -90,7 +90,7 @@ init_buffer('entendu par nao')
 init_buffer('compris par nao')
 
 # Initialisation de l'écoute et de l'objet de reconnaissance vocale
-with sr.Microphone(sample_rate=44100) as source: # Changer le numéro de device et le sample_rate au besoin (utiliser scripts_utilitaires/listage_micros pour trouver les bons paramètres)
+with sr.Microphone(device_index=config.id_micro, sample_rate=config.sample_rate) as source:
     r = sr.Recognizer()
     r = sr.Recognizer()
     # Début de la reconnaissance vocale

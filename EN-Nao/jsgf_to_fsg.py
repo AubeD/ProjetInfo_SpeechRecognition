@@ -16,7 +16,7 @@ import os
 import pocketsphinx as ps
 
 # Fichier à convertir et paramètres de la reconnaissance vocale
-model_path = '../EN-NAO/'
+model_path = './'
 log_path = 'log_jsgf_to_fsg.log'
 config = {
     'hmm': os.path.join(model_path, 'acoustic-model'),
