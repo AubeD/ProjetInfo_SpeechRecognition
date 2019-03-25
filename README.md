@@ -3,7 +3,7 @@
 ## Contrôle du robot NAO par la parole
 
 ### Environnement de développement
-* **OS**: Windows 10
+* **OS**: Windows 10, 8
 * **Python**: 3.6.5, distribution Anaconda
 
 ### Prérequis
