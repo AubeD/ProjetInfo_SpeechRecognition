@@ -1,0 +1,3 @@
+start listening: instruction inconnue dans le mode attente_instruction
+-11383 vs [-8000  -4000]
+save movement: -11383 vs [-8000  -4000] =>Rejet comme Faux Positif
