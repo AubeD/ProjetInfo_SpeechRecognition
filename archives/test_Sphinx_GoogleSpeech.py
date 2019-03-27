@@ -55,7 +55,11 @@ if recognizer == 'sphinx':
                             'connect kinect',
                             'close kinect',
                             'save movement',
-                            'stop movement'
+                            'stop movement',
+                            'start listening',
+                            'stop listening',
+                            'yes nao',
+                            'no nao'
                            ]
         for i in range(len(keyword_entries)):
             keyword_entries[i] = (keyword_entries[i], 0.9)

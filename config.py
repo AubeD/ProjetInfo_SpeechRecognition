@@ -48,6 +48,10 @@ instructions =  {
                 'close kinect':-4500,
                 'save movement':-6000,
                 'stop movement':-5500,
+                'start listening': -100000,
+                'stop listening': -100000,
+                'yes nao': -100000,
+                'no nao': -100000,
                 'RIEN':0 # 'RIEN' désigne une absence d'instruction reconnue.
                 }
 

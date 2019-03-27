@@ -44,12 +44,13 @@ try:
     grammar_path = os.path.abspath(os.path.dirname(grammar))
     grammar_name = os.path.splitext(os.path.basename(grammar))[0]
     fsg_path = "{0}/{1}.fsg".format(grammar_path, grammar_name)
-    if not os.path.exists(fsg_path):  # create FSG grammar if not available
-        jsgf = ps.Jsgf(grammar)
-        rule = jsgf.get_rule("{0}.{0}".format(grammar_name))
-        fsg = jsgf.build_fsg(rule, decoder.get_logmath(), 7.5)
-        fsg.writefile(fsg_path)
-        print('Successful JSFG to FSG conversion!!!')
+    if os.path.exists(fsg_path):
+        print('fsg erased, new version created with the .jsgf file')
+    jsgf = ps.Jsgf(grammar)
+    rule = jsgf.get_rule("{0}.{0}".format(grammar_name))
+    fsg = jsgf.build_fsg(rule, decoder.get_logmath(), 7.5)
+    fsg.writefile(fsg_path)
+    print('Successful JSFG to FSG conversion!!!')
 
     # Pass the fsg file into the decoder
     decoder.set_fsg(grammar_name, fsg)  # <--- BUG IS HERE!!!

@@ -2,12 +2,24 @@
 
 grammar GrammarNAO;
 
-public <GrammarNAO> = (<TotalOrder> | <DescriptiveOrder>);
+public <GrammarNAO> = (<restOrder> | <yesNoOrder> | <mirrorOrder> | <connectCloseOrder> | <startStopSaveOrder>);
 
-<TotalOrder> = <verb> [ <adjective> ] <noun>;
-<DescriptiveOrder> = <noun> <onoff>;
+<restOrder> = <verb> <robot> <verb>;
+<yesNoOrder> = <yesNo> <robot>;
+<mirrorOrder> = <mirrorMode> <onoff>;
+<connectCloseOrder> = <connectClose> <connectedClosedStuff>;
+<startStopSaveOrder> = <startStopSave> [ <startStopAdjective> ] <startStopNoun>;
 
-<noun> = ( nao | mirror | telecontrol | kinect | movement );
-<verb> = ( connect | make | start | stop | connect | close | save | rest );
+<verb> = ( make | rest );
+<yesNo> = (yes | no);
+<robot> = nao;
+
+<mirrorMode> = mirror;
 <onoff> = ( on | off );
-<adjective> = real-time;
+
+<connectClose> = (connect | close);
+<connectedClosedStuff> = (nao | kinect);
+
+<startStopSave> = (start | stop | save);
+<startStopAdjective> = real-time;
+<startStopNoun> = (telecontrol | movement | listening);
