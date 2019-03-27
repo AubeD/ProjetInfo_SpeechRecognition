@@ -5,6 +5,8 @@
 ### Environnement de développement
 * **OS**: Windows 10, 8
 * **Python**: 3.6.5, distribution Anaconda
+* **C++**: Visual Studio 2010 (Attention, le projet ne se build pas sur des versions plus récentes)
+
 
 ### Prérequis
 **Obligatoires** (faire fonctionner le code):
