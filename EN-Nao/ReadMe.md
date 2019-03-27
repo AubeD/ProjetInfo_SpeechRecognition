@@ -8,3 +8,5 @@ Ce dossier comprend les fichiers nécessaires pour la compréhension du langage 
 	* *GrammarNAO.fsg* est le fichier précédent, compilé à l'aide de Sphinx afin que ce dernier puisse s'en servir.
 
 Il comprend de plus le fichier *jsgf_to_fsg.py*, qui permet de compiler *GrammarNAO.jsgf* à l'aide du modèle Sphinx pour obtenir *GrammarNAO.fsg*.
+
+En cas d'erreur liée au fichier *jsgf_to_fsg.py* un log est disponible dans ce dossier. Il s'appelle *log_jsgf_to_fsg.log*.
