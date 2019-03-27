@@ -24,7 +24,7 @@ Ce projet vise à contrôler le robot NAO grâce à la reconnaissance vocale. Po
 Il existe un certain nombre d'instructions qui peuvent être reconnues par le code Python. Ce dernier les reconnaît puis les envoie à l'algorithme qui contrôle NAO, afin qu'elles soient effectuées.
 
 ### Fonctionnement du projet
-![Schema du fonctionnement](https://github.com/AubeD/ProjetInfo_SpeechRecognition/blob/master/schema/schema.png)
+![Schema du fonctionnement](https://github.com/AubeD/ProjetInfo_SpeechRecognition/blob/master/schema/schema.PNG)
 
 ### Structure du projet - code Python
 Le projet comprend :
