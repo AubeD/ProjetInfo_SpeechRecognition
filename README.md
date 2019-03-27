@@ -28,7 +28,7 @@ Il existe un certain nombre d'instructions qui peuvent être reconnues par le co
 
 ### Structure du projet - code Python
 Le projet comprend :
-* *config.py*: Fichier contenant les chemins Python, les instructions à reconnaître et les seuils de détection. À modifier en cas de changement de structure du code Python ou de changement des instructions à reconnaître.
+* *config.py*: Fichier contenant les chemins Python, les instructions à reconnaître et les seuils de détection. À modifier en cas de changement de structure du code Python ou de changement des instructions à reconnaître. Les seuils de "yes nao", "no nao", "start listening" et "stop listening" sont à affiner. Ce fichier comprend aussi un graphe d'état, le programme peut en effet être dans les états "arrêt", "doute", "pause" ou "attente_instruction". Si l'on souhaite rajouter des modes il faut modifier les variables de ce fichier. Il faut rajouter ce mode dans la liste des états possibles, ajouter les instructions possibles pour ce mode, les instructions qui vont faire sortir de cet état et éventuellement l'instruction C++ qui peut provoquer cet état.
 
 * *programme_python_nao.py*: Le programme qui effectue la reconnaissance vocale, traite les résultats obtenus et en déduit les instructions que NAO devra effectuer. Il transmet ensuite ces instructions à l'algorithme contrôlant NAO, qui travaille en parallèle.
 
