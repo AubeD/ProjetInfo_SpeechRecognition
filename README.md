@@ -56,7 +56,12 @@ Le projet comprend :
 
 2. Lancer le fichier *programme_python_nao.py* et lire (avec *mtail.exe* ou son propre programme):
     * Les informations remontées par le programme dans *logs/log_Python.py*
-    * Les informations transmises au programme contrôlant NAO dans *communication/buffer_entendu.txt* (texte entendu par NAO) et *communication/buffer_compris.txt* (instructions à transmettre au robot).
+    * Les informations transmises au programme contrôlant NAO dans *communication/buffer_entendu.txt* (texte entendu par NAO) et *communication/buffer_compris.txt* (instructions à transmettre au robot). Sur l'ordinateur de la salle Amigo, le programme a été modifié pour inscrire les instructions dans le fichier texte "naoKinect/instructions.txt" qui est lié au programma C++.
+
+#### Faire fonctionner le programme C++ et Python ensemble
+
+3. Une fois le programme Python lancé, exécuter le projet *naoKinect.vcxproj* contenu dans le dossier NaoKinect. Faire le build. Mettre la bonne adresse IP du robot dans l'interface.
+4.Parler. Ne pas oublier de dire "connect Nao" et "connect Kinect" avant de faire d'autres instructions.
 
 **En cas de problème avec le micro...**
 
@@ -118,7 +123,5 @@ De base, SpeechRecognition utilise le micro "Par défaut" de l'ordinateur consid
 5. Lancer le programme à utiliser.
 
 ### Reste à faire :
-
-* Intégrer la partie du projet rédigée en code C++
 
 * Intégrer un système permettant d'interrompre l'écoute ("bouton on/off"), et une "zone de doute" dans laquelle NAO nous demande si on a effectivement prononcé certaines instructions (pour adoucir le rejet de faux positifs en mode "tout ou rien").
