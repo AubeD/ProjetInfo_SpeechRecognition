@@ -6,4 +6,4 @@ Ce dossier comprend les buffers de communication *Python -> C++* et *C++ -> Pyth
 * *buffer_compris.txt*: Lorsque Python confirme une instruction comprise par Sphinx, il l'écrit dans ce fichier pour que le programme C++ la fasse exécuter par NAO.
 
 **C++ -> Python**
-* *stop_Python.txt*: Lorsque le programme C++ s'arrête, il écrit "stop" dans ce fichier. Python s'arrête lorsqu'il le lit. (Note: ce fichier peut être renommé et son contenu étendu si l'on veut que C++ fasse passer plus d'information à Python).
+* *buffer_C.txt*: Permet l'envoi d'instruction de la part du programme C++ vers le programme Python. Par exemple lorsque le programme C++ s'arrête, il écrit "stop" dans ce fichier. Python s'arrête lorsqu'il le lit. Les autres instructions possibles sont "pause" et "reprise".
