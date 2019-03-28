@@ -231,13 +231,13 @@ def supprimer_enregistrements_RIEN_sans_FP():
 #########################################################################################
 
 if __name__ == '__main__':
-#    # Décommenter ce bloc pour enregistrer manuellement des instructions en continu
-#    while True:
-#        enregistrer_phrase()
+    #Décommenter ce bloc pour enregistrer manuellement des instructions en continu
+    #while True:
+        #enregistrer_phrase()
     
-#    # Décommenter ce bloc pour enregistrer des faux positifs en continu
-#    enregistrer_FP_en_continu(150, 5)
-#    supprimer_enregistrements_RIEN_sans_FP()
+    # Décommenter ce bloc pour enregistrer des faux positifs en continu
+    #enregistrer_FP_en_continu(100, 5)
+    #supprimer_enregistrements_RIEN_sans_FP()
     
     # Décommenter ce bloc pour visualiser les TP et FP parmi les enregistrements existants
     visualiser_TP_FP()
